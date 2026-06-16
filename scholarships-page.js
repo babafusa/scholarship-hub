@@ -22,7 +22,7 @@ const checkboxes      = document.querySelectorAll('.filter-checkbox');
 
 async function fetchScholarships() {
   try {
-    const data = await window.DB.select('scholarships', 'order=created_at.desc&limit=200');
+    const data = await window.DB.select('scholarships', 'status=eq.published&order=created_at.desc&limit=200');
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.error('[ScholarHub]', err);

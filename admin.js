@@ -1,31 +1,29 @@
 /**
  * admin.js — ScholarHub Admin Dashboard
- * Handles login, scholarship CRUD, blog post CRUD.
+ * Updated with Drafts tab and publish workflow.
  */
 'use strict';
 
-/* ------------------------------------------
-   STATE
------------------------------------------- */
 let editingScholarshipId = null;
 let editingPostId        = null;
 let scholarships         = [];
 let posts                = [];
+let drafts               = [];
 
 /* ------------------------------------------
    LOGIN
 ------------------------------------------ */
 
-const loginBtn      = document.getElementById('loginBtn');
-const loginEmail    = document.getElementById('loginEmail');
-const loginPassword = document.getElementById('loginPassword');
-const loginError    = document.getElementById('loginError');
-const loginScreen   = document.getElementById('loginScreen');
-const adminApp      = document.getElementById('adminApp');
+const loginBtn       = document.getElementById('loginBtn');
+const loginEmail     = document.getElementById('loginEmail');
+const loginPassword  = document.getElementById('loginPassword');
+const loginError     = document.getElementById('loginError');
+const loginScreen    = document.getElementById('loginScreen');
+const adminApp       = document.getElementById('adminApp');
 const adminUserEmail = document.getElementById('adminUserEmail');
 
 function showLoginError(msg) {
-  loginError.textContent = msg;
+  loginError.textContent   = msg;
   loginError.style.display = 'block';
 }
 
@@ -35,7 +33,6 @@ async function handleLogin() {
   loginError.style.display = 'none';
   loginBtn.textContent = 'Signing in...';
   loginBtn.disabled    = true;
-
   try {
     await window.Auth.signIn(email, password);
     showApp();
@@ -58,12 +55,14 @@ loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') handleLo
 function showApp() {
   loginScreen.style.display = 'none';
   adminApp.style.display    = 'grid';
-  window.Auth.getUser().then(user => { if (adminUserEmail && user) adminUserEmail.textContent = user.email; });
+  window.Auth.getUser().then(user => {
+    if (adminUserEmail && user) adminUserEmail.textContent = user.email;
+  });
   loadScholarships();
+  loadDrafts();
   loadPosts();
 }
 
-// Check if already logged in (session persists)
 window.Auth.isLoggedIn().then(loggedIn => { if (loggedIn) showApp(); });
 
 /* ------------------------------------------
@@ -86,9 +85,9 @@ document.querySelectorAll('.admin-nav__item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.admin-nav__item').forEach(i => i.classList.remove('admin-nav__item--active'));
     item.classList.add('admin-nav__item--active');
-
     const tab = item.dataset.tab;
     document.getElementById('tab-scholarships').style.display = tab === 'scholarships' ? '' : 'none';
+    document.getElementById('tab-drafts').style.display       = tab === 'drafts'       ? '' : 'none';
     document.getElementById('tab-posts').style.display        = tab === 'posts'        ? '' : 'none';
   });
 });
@@ -134,16 +133,151 @@ function statusBadge(dateStr) {
   return '<span class="badge badge--success">Open</span>';
 }
 
+function escHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, m =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])
+  );
+}
+
 /* ------------------------------------------
-   SCHOLARSHIPS — LOAD & RENDER
+   DRAFTS TAB — AI-generated scholarship drafts
+------------------------------------------ */
+
+async function loadDrafts() {
+  const tbody = document.getElementById('draftsTableBody');
+  const badge = document.getElementById('draftsBadge');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="6" class="admin-table__loading">Loading drafts...</td></tr>';
+
+  try {
+    const data = await window.DB.select('scholarships', 'status=eq.draft&order=created_at.desc');
+    drafts = Array.isArray(data) ? data : [];
+
+    // Update badge count
+    if (badge) {
+      badge.textContent = drafts.length;
+      badge.style.display = drafts.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    renderDraftsTable();
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="6" class="admin-table__loading">Error loading drafts.</td></tr>';
+    showAlert('Failed to load drafts: ' + err.message, 'error');
+  }
+}
+
+function renderDraftsTable() {
+  const tbody = document.getElementById('draftsTableBody');
+  if (!tbody) return;
+
+  if (drafts.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="admin-table__loading">
+          <div style="text-align:center;padding:var(--space-10)">
+            <div style="font-size:2rem;margin-bottom:var(--space-3)">🤖</div>
+            <div style="font-weight:600;color:var(--color-text-primary);margin-bottom:var(--space-2)">No drafts yet</div>
+            <div style="font-size:var(--text-sm);color:var(--color-text-muted)">The AI agent runs every 2 hours and will deposit new scholarship drafts here for your review.</div>
+          </div>
+        </td>
+      </tr>`;
+    return;
+  }
+
+  tbody.innerHTML = drafts.map(s => `
+    <tr>
+      <td>
+        <div class="admin-table__title">${escHtml(s.emoji || '🎓')} ${escHtml(s.title)}</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">${escHtml(s.organization)} · ${escHtml(s.country_of_study || '')}</div>
+      </td>
+      <td><span class="badge badge--primary">${escHtml((s.level || []).join(', '))}</span></td>
+      <td>${formatDate(s.deadline)}</td>
+      <td>${statusBadge(s.deadline)}</td>
+      <td>
+        <div style="font-size:var(--text-sm);color:var(--color-text-secondary);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+          ${escHtml(s.description || '')}
+        </div>
+      </td>
+      <td>
+        <div class="admin-table__actions">
+          <button class="btn btn--primary btn--sm" onclick="publishDraft('${escHtml(s.id)}', '${escHtml(s.title)}')">✓ Publish</button>
+          <button class="btn btn--outline btn--sm" onclick="editDraft('${escHtml(s.id)}')">Edit</button>
+          <button class="btn btn--ghost btn--sm" style="color:var(--color-danger)" onclick="deleteDraft('${escHtml(s.id)}', '${escHtml(s.title)}')">✕ Reject</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+window.publishDraft = async function(id, title) {
+  if (!confirm('Publish "' + title + '"? It will go live on the website immediately.')) return;
+  try {
+    await window.DB.update('scholarships', id, {
+      status: 'published',
+      updated_at: new Date().toISOString(),
+    });
+    showAlert('"' + title + '" is now live on the website!');
+    await loadDrafts();
+    await loadScholarships();
+  } catch (err) {
+    showAlert('Error publishing: ' + err.message, 'error');
+  }
+};
+
+window.editDraft = function(id) {
+  // Opens the draft in the scholarship edit form
+  const s = drafts.find(x => x.id === id);
+  if (!s) return;
+
+  // Switch to scholarships tab
+  document.querySelectorAll('.admin-nav__item').forEach(i => i.classList.remove('admin-nav__item--active'));
+  document.querySelector('[data-tab="scholarships"]').classList.add('admin-nav__item--active');
+  document.getElementById('tab-scholarships').style.display = '';
+  document.getElementById('tab-drafts').style.display       = 'none';
+  document.getElementById('tab-posts').style.display        = 'none';
+
+  // Pre-fill the form
+  editingScholarshipId = id;
+  document.getElementById('s_id').value           = s.id;
+  document.getElementById('s_id').disabled        = true;
+  document.getElementById('s_title').value        = s.title || '';
+  document.getElementById('s_organization').value = s.organization || '';
+  document.getElementById('s_emoji').value        = s.emoji || '🎓';
+  document.getElementById('s_description').value  = s.description || '';
+  document.getElementById('s_amount').value       = s.amount || '';
+  document.getElementById('s_deadline').value     = s.deadline || '';
+  document.getElementById('s_link').value         = s.link || '';
+  document.getElementById('s_level').value        = (s.level || []).join(', ');
+  document.getElementById('s_region').value       = (s.region || []).join(', ');
+  document.getElementById('s_tags').value         = (s.tags || []).join(', ');
+  document.getElementById('s_country').value      = s.country_of_study || '';
+  document.getElementById('s_featured').checked   = s.featured || false;
+
+  document.getElementById('scholarshipFormTitle').textContent = 'Edit Draft Before Publishing';
+  document.getElementById('scholarshipForm').style.display = '';
+  document.getElementById('scholarshipForm').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.deleteDraft = async function(id, title) {
+  if (!confirm('Reject and delete "' + title + '"? This cannot be undone.')) return;
+  try {
+    await window.DB.delete('scholarships', id);
+    showAlert('Draft rejected and deleted.');
+    await loadDrafts();
+  } catch (err) {
+    showAlert('Error deleting draft: ' + err.message, 'error');
+  }
+};
+
+/* ------------------------------------------
+   SCHOLARSHIPS — LOAD & RENDER (published only)
 ------------------------------------------ */
 
 async function loadScholarships() {
   const tbody = document.getElementById('scholarshipsTableBody');
   tbody.innerHTML = '<tr><td colspan="5" class="admin-table__loading">Loading...</td></tr>';
-
   try {
-    const data = await window.DB.select('scholarships', 'order=created_at.desc');
+    const data = await window.DB.select('scholarships', 'status=eq.published&order=created_at.desc');
     scholarships = Array.isArray(data) ? data : [];
     renderScholarshipsTable();
   } catch (err) {
@@ -155,10 +289,9 @@ async function loadScholarships() {
 function renderScholarshipsTable() {
   const tbody = document.getElementById('scholarshipsTableBody');
   if (scholarships.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="admin-table__loading">No scholarships yet. Add your first one above.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="admin-table__loading">No published scholarships yet.</td></tr>';
     return;
   }
-
   tbody.innerHTML = scholarships.map(s => `
     <tr>
       <td>
@@ -210,9 +343,8 @@ window.editScholarship = function(id) {
   const s = scholarships.find(x => x.id === id);
   if (!s) return;
   editingScholarshipId = id;
-
   document.getElementById('s_id').value           = s.id;
-  document.getElementById('s_id').disabled        = true; // can't change ID
+  document.getElementById('s_id').disabled        = true;
   document.getElementById('s_title').value        = s.title || '';
   document.getElementById('s_organization').value = s.organization || '';
   document.getElementById('s_emoji').value        = s.emoji || '🎓';
@@ -225,7 +357,6 @@ window.editScholarship = function(id) {
   document.getElementById('s_tags').value         = (s.tags || []).join(', ');
   document.getElementById('s_country').value      = s.country_of_study || '';
   document.getElementById('s_featured').checked   = s.featured || false;
-
   document.getElementById('scholarshipFormTitle').textContent = 'Edit Scholarship';
   document.getElementById('scholarshipForm').style.display = '';
   document.getElementById('scholarshipForm').scrollIntoView({ behavior: 'smooth' });
@@ -235,20 +366,12 @@ async function saveScholarship() {
   const id    = document.getElementById('s_id').value.trim();
   const title = document.getElementById('s_title').value.trim();
   const org   = document.getElementById('s_organization').value.trim();
-
-  if (!id || !title || !org) {
-    showAlert('ID, Title, and Organization are required.', 'error');
-    return;
-  }
-
+  if (!id || !title || !org) { showAlert('ID, Title, and Organization are required.', 'error'); return; }
   if (!editingScholarshipId && !/^[a-z0-9-]+$/.test(id)) {
-    showAlert('ID must contain only lowercase letters, numbers, and hyphens.', 'error');
-    return;
+    showAlert('ID must contain only lowercase letters, numbers, and hyphens.', 'error'); return;
   }
-
   const body = {
-    title:            title,
-    organization:     org,
+    title, organization: org,
     emoji:            document.getElementById('s_emoji').value.trim() || '🎓',
     description:      document.getElementById('s_description').value.trim(),
     amount:           document.getElementById('s_amount').value.trim(),
@@ -259,13 +382,11 @@ async function saveScholarship() {
     tags:             parseCSV(document.getElementById('s_tags').value),
     country_of_study: document.getElementById('s_country').value.trim(),
     featured:         document.getElementById('s_featured').checked,
+    status:           'published',
     updated_at:       new Date().toISOString(),
   };
-
   const saveBtn = document.getElementById('saveScholarshipBtn');
-  saveBtn.textContent = 'Saving...';
-  saveBtn.disabled    = true;
-
+  saveBtn.textContent = 'Saving...'; saveBtn.disabled = true;
   try {
     if (editingScholarshipId) {
       await window.DB.update('scholarships', editingScholarshipId, body);
@@ -278,10 +399,9 @@ async function saveScholarship() {
     editingScholarshipId = null;
     await loadScholarships();
   } catch (err) {
-    showAlert('Error saving scholarship: ' + err.message, 'error');
+    showAlert('Error saving: ' + err.message, 'error');
   } finally {
-    saveBtn.textContent = 'Save Scholarship';
-    saveBtn.disabled    = false;
+    saveBtn.textContent = 'Save Scholarship'; saveBtn.disabled = false;
   }
 }
 
@@ -297,7 +417,7 @@ window.deleteScholarship = async function(id, title) {
 };
 
 /* ------------------------------------------
-   BLOG POSTS — LOAD & RENDER
+   BLOG POSTS
 ------------------------------------------ */
 
 async function loadPosts() {
@@ -309,7 +429,6 @@ async function loadPosts() {
     renderPostsTable();
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="5" class="admin-table__loading">Error loading posts.</td></tr>';
-    showAlert('Failed to load posts: ' + err.message, 'error');
   }
 }
 
@@ -333,10 +452,6 @@ function renderPostsTable() {
       </td>
     </tr>`).join('');
 }
-
-/* ------------------------------------------
-   BLOG POSTS — ADD / EDIT
------------------------------------------- */
 
 document.getElementById('addPostBtn').addEventListener('click', () => {
   editingPostId = null;
@@ -366,7 +481,6 @@ window.editPost = function(id) {
   const p = posts.find(x => x.id === id);
   if (!p) return;
   editingPostId = id;
-
   document.getElementById('p_id').value        = p.id;
   document.getElementById('p_id').disabled     = true;
   document.getElementById('p_title').value     = p.title || '';
@@ -377,7 +491,6 @@ window.editPost = function(id) {
   document.getElementById('p_read_time').value = p.read_time || '';
   document.getElementById('p_date').value      = p.date || '';
   document.getElementById('p_featured').checked = p.featured || false;
-
   document.getElementById('postFormTitle').textContent = 'Edit Post';
   document.getElementById('postForm').style.display = '';
   document.getElementById('postForm').scrollIntoView({ behavior: 'smooth' });
@@ -387,20 +500,12 @@ async function savePost() {
   const id       = document.getElementById('p_id').value.trim();
   const title    = document.getElementById('p_title').value.trim();
   const category = document.getElementById('p_category').value;
-
-  if (!id || !title || !category) {
-    showAlert('ID, Title, and Category are required.', 'error');
-    return;
-  }
-
+  if (!id || !title || !category) { showAlert('ID, Title, and Category are required.', 'error'); return; }
   if (!editingPostId && !/^[a-z0-9-]+$/.test(id)) {
-    showAlert('ID must contain only lowercase letters, numbers, and hyphens.', 'error');
-    return;
+    showAlert('ID must contain only lowercase letters, numbers, and hyphens.', 'error'); return;
   }
-
   const body = {
-    title:      title,
-    category:   category,
+    title, category,
     excerpt:    document.getElementById('p_excerpt').value.trim(),
     content:    document.getElementById('p_content').value.trim(),
     image:      document.getElementById('p_image').value.trim(),
@@ -409,18 +514,15 @@ async function savePost() {
     featured:   document.getElementById('p_featured').checked,
     updated_at: new Date().toISOString(),
   };
-
   const saveBtn = document.getElementById('savePostBtn');
-  saveBtn.textContent = 'Saving...';
-  saveBtn.disabled    = true;
-
+  saveBtn.textContent = 'Saving...'; saveBtn.disabled = true;
   try {
     if (editingPostId) {
       await window.DB.update('blog_posts', editingPostId, body);
-      showAlert('Post updated successfully.');
+      showAlert('Post updated.');
     } else {
       await window.DB.insert('blog_posts', { id, ...body, created_at: new Date().toISOString() });
-      showAlert('Post added successfully.');
+      showAlert('Post added.');
     }
     document.getElementById('postForm').style.display = 'none';
     editingPostId = null;
@@ -428,8 +530,7 @@ async function savePost() {
   } catch (err) {
     showAlert('Error saving post: ' + err.message, 'error');
   } finally {
-    saveBtn.textContent = 'Save Post';
-    saveBtn.disabled    = false;
+    saveBtn.textContent = 'Save Post'; saveBtn.disabled = false;
   }
 }
 
@@ -443,13 +544,3 @@ window.deletePost = async function(id, title) {
     showAlert('Error deleting: ' + err.message, 'error');
   }
 };
-
-/* ------------------------------------------
-   SAFE HTML ESCAPE
------------------------------------------- */
-
-function escHtml(str) {
-  return String(str || '').replace(/[&<>"']/g, m =>
-    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])
-  );
-}

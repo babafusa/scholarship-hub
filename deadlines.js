@@ -17,7 +17,7 @@ const pills        = document.querySelectorAll('.dl-pill');
 
 async function fetchScholarships() {
   try {
-    const data = await window.DB.select('scholarships', 'order=deadline.asc.nullslast&limit=200');
+    const data = await window.DB.select('scholarships', 'status=eq.published&order=deadline.asc.nullslast&limit=200');
     return Array.isArray(data) ? data : [];
   } catch (err) { console.error('[ScholarHub]', err); return []; }
 }

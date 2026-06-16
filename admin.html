@@ -52,6 +52,9 @@
         <button class="admin-nav__item admin-nav__item--active" data-tab="scholarships">
           🎓 Scholarships
         </button>
+        <button class="admin-nav__item" data-tab="drafts">
+          🤖 AI Drafts <span class="filter-sidebar__active-count" id="draftsBadge" hidden style="margin-left:4px">0</span>
+        </button>
         <button class="admin-nav__item" data-tab="posts">
           📝 Blog Posts
         </button>
@@ -162,6 +165,42 @@
             </thead>
             <tbody id="scholarshipsTableBody">
               <tr><td colspan="5" class="admin-table__loading">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+
+      <!-- =====================
+           DRAFTS TAB
+      ===================== -->
+      <section class="admin-tab" id="tab-drafts" style="display:none">
+
+        <div class="admin-tab__header">
+          <div>
+            <h2 class="admin-tab__title">AI Drafts</h2>
+            <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-1)">
+              Scholarships researched by the AI agent every 2 hours. Review, edit if needed, then publish.
+            </p>
+          </div>
+          <button class="btn btn--outline" onclick="loadDrafts()">↻ Refresh</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="draftsTable">
+            <thead>
+              <tr>
+                <th>Scholarship</th>
+                <th>Level</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="draftsTableBody">
+              <tr><td colspan="6" class="admin-table__loading">Loading...</td></tr>
             </tbody>
           </table>
         </div>
