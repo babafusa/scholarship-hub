@@ -106,13 +106,24 @@ Rules:
 ------------------------------------------ */
 
 async function getExistingIds() {
-  const response = await fetch(SUPABASE_URL + '/rest/v1/scholarships?select=id', {
+  const url = SUPABASE_URL + '/rest/v1/scholarships?select=id';
+  console.log('Fetching from:', url);
+  console.log('Using service key (first 20 chars):', SUPABASE_SERVICE_KEY.slice(0, 20));
+  
+  const response = await fetch(url, {
     headers: {
       'apikey': SUPABASE_SERVICE_KEY,
       'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
     },
   });
-  if (!response.ok) throw new Error('Failed to fetch existing scholarships');
+  
+  console.log('Supabase response status:', response.status);
+  
+  if (!response.ok) {
+    const errText = await response.text();
+    console.error('Supabase error body:', errText);
+    throw new Error('Failed to fetch existing scholarships: ' + response.status + ' ' + errText);
+  }
   const data = await response.json();
   return new Set(data.map(s => s.id));
 }
