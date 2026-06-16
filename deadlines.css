@@ -1,0 +1,359 @@
+/* ============================================
+   deadlines.css — Deadline Tracker page styles
+   ============================================ */
+
+
+/* ------------------------------------------
+   PAGE HERO
+------------------------------------------ */
+
+.deadline-hero {
+  background: linear-gradient(160deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%);
+  padding-block: var(--space-16) var(--space-12);
+  position: relative;
+  overflow: hidden;
+}
+
+.deadline-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 80% 50%, rgba(212,151,10,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.deadline-hero__title {
+  font-size: var(--text-4xl);
+  color: #ffffff;
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+
+.deadline-hero__subtitle {
+  color: var(--color-primary-200);
+  font-size: var(--text-md);
+  max-width: 52ch;
+  margin-bottom: var(--space-10);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .deadline-hero__title { font-size: var(--text-5xl); }
+}
+
+/* Stats row */
+.deadline-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+
+.deadline-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.deadline-stat__number {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: #ffffff;
+  line-height: 1;
+}
+
+.deadline-stat__label {
+  font-size: var(--text-xs);
+  color: var(--color-primary-300);
+  letter-spacing: var(--tracking-wide);
+}
+
+.deadline-stat__divider {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(255,255,255,0.2);
+}
+
+
+/* ------------------------------------------
+   CONTROLS BAR
+------------------------------------------ */
+
+.deadline-controls {
+  background-color: var(--color-bg);
+  border-bottom: var(--border-width) solid var(--color-border);
+  padding-block: var(--space-4);
+  position: sticky;
+  top: 68px;
+  z-index: var(--z-raised);
+}
+
+.deadline-controls__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+/* Filter pills */
+.deadline-filter-pills {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.dl-pill {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: var(--border-width-2) solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--transition-fast),
+              background-color var(--transition-fast),
+              color var(--transition-fast);
+}
+
+.dl-pill:hover {
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+}
+
+.dl-pill--active {
+  background-color: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+  color: #ffffff;
+}
+
+.dl-pill--active:hover {
+  background-color: var(--color-primary-700);
+  border-color: var(--color-primary-700);
+  color: #ffffff;
+}
+
+
+/* ------------------------------------------
+   DEADLINE LIST
+------------------------------------------ */
+
+.deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+
+/* ------------------------------------------
+   DEADLINE ROW CARD
+------------------------------------------ */
+
+.dl-card {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+  border-left: 4px solid transparent;
+}
+
+.dl-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+.dl-card--open    { border-left-color: var(--color-success); }
+.dl-card--soon    { border-left-color: var(--color-warning); }
+.dl-card--urgent  { border-left-color: var(--color-danger); }
+.dl-card--closed  { border-left-color: var(--color-neutral-300); opacity: 0.7; }
+
+/* Top row: logo + info + badge */
+.dl-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.dl-card__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.dl-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dl-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+  line-height: var(--leading-snug);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dl-card__org {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.dl-card__badge {
+  flex-shrink: 0;
+}
+
+/* Countdown block */
+.dl-card__countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.dl-countdown {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dl-countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  min-width: 52px;
+  border: var(--border-width) solid var(--color-border);
+}
+
+.dl-countdown__number {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.dl-countdown__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Countdown colors for urgent */
+.dl-card--urgent .dl-countdown__number { color: var(--color-danger); }
+.dl-card--urgent .dl-countdown__unit   { border-color: var(--color-danger-light); background-color: var(--color-danger-light); }
+
+.dl-card--soon .dl-countdown__number   { color: var(--color-warning); }
+.dl-card--soon .dl-countdown__unit     { border-color: var(--color-warning-light); background-color: var(--color-warning-light); }
+
+/* Closed state — no countdown shown */
+.dl-countdown--closed {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Progress bar */
+.dl-progress {
+  flex: 1;
+  min-width: 140px;
+}
+
+.dl-progress__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.dl-progress__bar {
+  height: 6px;
+  background-color: var(--color-neutral-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.dl-progress__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-success);
+  transition: width var(--transition-slow);
+}
+
+.dl-card--soon   .dl-progress__fill { background-color: var(--color-warning); }
+.dl-card--urgent .dl-progress__fill { background-color: var(--color-danger); }
+.dl-card--closed .dl-progress__fill { background-color: var(--color-neutral-400); }
+
+/* Bottom row: tags + apply button */
+.dl-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.dl-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Responsive: 2-col on larger screens */
+@media (min-width: 640px) {
+  .dl-card {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+  }
+
+  .dl-card__top {
+    grid-column: 1;
+  }
+
+  .dl-card__countdown {
+    grid-column: 1 / -1;
+  }
+
+  .dl-card__bottom {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .dl-card {
+    grid-template-columns: 1fr 1fr auto;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+  }
+
+  .dl-card__top        { grid-column: 1; grid-row: 1; }
+  .dl-card__countdown  { grid-column: 2; grid-row: 1; justify-content: flex-end; }
+  .dl-card__bottom     { grid-column: 1 / -1; grid-row: 2; }
+}

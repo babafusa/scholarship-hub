@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" id="postMetaDesc" content="ScholarHub guide." />
+  <title id="postTitle">Guide | ScholarHub</title>
+  <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="variables.css" />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="ScholarHub home">
+        <div class="navbar__logo-mark" aria-hidden="true">S</div>
+        <span class="navbar__logo-text">Scholar<span>Hub</span></span>
+      </a>
+      <nav class="navbar__nav" aria-label="Main navigation">
+        <a href="index.html"        class="navbar__link">Home</a>
+        <a href="scholarships.html" class="navbar__link">Scholarships</a>
+        <a href="blog.html"         class="navbar__link navbar__link--active">Guides</a>
+        <a href="deadlines.html"    class="navbar__link">Deadlines</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="scholarships.html" class="btn btn--primary btn--sm">Browse Scholarships</a>
+        <button class="navbar__toggle" id="navToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open navigation menu">
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+      <a href="index.html"        class="navbar__mobile-link">Home</a>
+      <a href="scholarships.html" class="navbar__mobile-link">Scholarships</a>
+      <a href="blog.html"         class="navbar__mobile-link">Guides &amp; Tips</a>
+      <a href="deadlines.html"    class="navbar__mobile-link">Deadline Tracker</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- POST HERO — populated by blog-post.js -->
+    <section class="post-hero" id="postHero">
+      <div class="container post-hero__inner">
+        <a href="blog.html" class="post-back">&#8592; Back to Guides</a>
+        <div class="post-hero__meta" id="postHeroMeta"></div>
+        <h1 class="post-hero__title" id="postHeroTitle">Loading...</h1>
+        <div class="post-hero__byline" id="postHeroByline"></div>
+      </div>
+    </section>
+
+    <!-- POST BODY -->
+    <div class="post-layout">
+      <div class="container">
+        <div class="post-layout__inner">
+
+          <!-- Article content -->
+          <article class="post-content" id="postContent" aria-label="Article content">
+            <div class="post-content__body" id="postBody">
+              <!-- Injected by blog-post.js -->
+            </div>
+          </article>
+
+          <!-- Sidebar -->
+          <aside class="post-sidebar" aria-label="Related content">
+
+            <!-- Table of contents -->
+            <div class="post-sidebar__card" id="tocCard">
+              <h3 class="post-sidebar__heading">In this guide</h3>
+              <nav id="tableOfContents" aria-label="Table of contents"></nav>
+            </div>
+
+            <!-- Related scholarships CTA -->
+            <div class="post-sidebar__card post-sidebar__cta">
+              <p class="post-sidebar__cta-label">Ready to apply?</p>
+              <h3 class="post-sidebar__cta-title">Browse open scholarships</h3>
+              <p class="post-sidebar__cta-text">Filter by country, level, and funding type to find your match.</p>
+              <a href="scholarships.html" class="btn btn--primary" style="width:100%;justify-content:center;margin-top:var(--space-4)">
+                Browse Scholarships
+              </a>
+            </div>
+
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <!-- MORE POSTS -->
+    <section class="section--sm" style="background:var(--color-bg-subtle)">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Keep reading</span>
+          <h2 class="section-title" style="font-size:var(--text-2xl)">More guides</h2>
+        </div>
+        <div class="grid-cards grid-cards--sm" id="morePosts" aria-live="polite"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo-text">Scholar<span>Hub</span></div>
+          <p>A free resource helping Nigerian, African, and international students find and win scholarships.</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Explore</h3>
+          <ul class="footer__links">
+            <li><a href="scholarships.html" class="footer__link">All Scholarships</a></li>
+            <li><a href="blog.html"         class="footer__link">Guides &amp; Tips</a></li>
+            <li><a href="deadlines.html"    class="footer__link">Deadline Tracker</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Resources</h3>
+          <ul class="footer__links">
+            <li><a href="blog.html" class="footer__link">How to Apply</a></li>
+            <li><a href="blog.html" class="footer__link">Write a Strong Essay</a></li>
+            <li><a href="blog.html" class="footer__link">Document Checklist</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="footerYear"></span> ScholarHub. All rights reserved.</p>
+        <p>Built for students, by students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.js" defer></script>
+  <script src="main.js"        defer></script>
+  <script src="blog-post.js"   defer></script>
+
+</body>
+</html>

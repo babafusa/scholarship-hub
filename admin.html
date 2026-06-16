@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | ScholarHub</title>
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="variables.css" />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="admin-login" id="loginScreen">
+    <div class="admin-login__card">
+      <div class="admin-login__logo">
+        <div class="navbar__logo-mark" style="width:48px;height:48px;font-size:1.5rem;">S</div>
+        <h1 class="admin-login__title">ScholarHub Admin</h1>
+      </div>
+      <p class="admin-login__subtitle">Sign in to manage scholarships and blog posts.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email</label>
+        <input type="email" class="form-input" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+      </div>
+      <div class="form-group" style="margin-top:var(--space-4)">
+        <label class="form-label" for="loginPassword">Password</label>
+        <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+
+      <div id="loginError" class="admin-alert admin-alert--error" style="display:none"></div>
+
+      <button class="btn btn--primary" id="loginBtn" style="width:100%;margin-top:var(--space-6);justify-content:center;">
+        Sign In
+      </button>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div class="admin-app" id="adminApp" style="display:none">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__logo">
+        <div class="navbar__logo-mark">S</div>
+        <span class="navbar__logo-text">Scholar<span>Hub</span></span>
+      </div>
+
+      <nav class="admin-nav">
+        <button class="admin-nav__item admin-nav__item--active" data-tab="scholarships">
+          🎓 Scholarships
+        </button>
+        <button class="admin-nav__item" data-tab="posts">
+          📝 Blog Posts
+        </button>
+      </nav>
+
+      <div class="admin-sidebar__footer">
+        <span id="adminUserEmail" class="admin-user-email"></span>
+        <button class="btn btn--ghost btn--sm" id="logoutBtn">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="admin-main">
+
+      <!-- Global alert -->
+      <div id="adminAlert" class="admin-alert" style="display:none"></div>
+
+      <!-- =====================
+           SCHOLARSHIPS TAB
+      ===================== -->
+      <section class="admin-tab" id="tab-scholarships">
+
+        <div class="admin-tab__header">
+          <h2 class="admin-tab__title">Scholarships</h2>
+          <button class="btn btn--primary" id="addScholarshipBtn">+ Add Scholarship</button>
+        </div>
+
+        <!-- Scholarship form (hidden by default) -->
+        <div class="admin-form-card" id="scholarshipForm" style="display:none">
+          <h3 class="admin-form-card__title" id="scholarshipFormTitle">Add New Scholarship</h3>
+
+          <div class="admin-form-grid">
+            <div class="form-group">
+              <label class="form-label" for="s_id">ID (URL-safe, no spaces) *</label>
+              <input type="text" class="form-input" id="s_id" placeholder="e.g. gates-scholarship-2026" />
+              <p class="form-hint">Letters, numbers, and hyphens only. Cannot be changed after saving.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_emoji">Emoji</label>
+              <input type="text" class="form-input" id="s_emoji" placeholder="🎓" maxlength="4" />
+            </div>
+            <div class="form-group admin-form-grid__full">
+              <label class="form-label" for="s_title">Title *</label>
+              <input type="text" class="form-input" id="s_title" placeholder="e.g. Gates Cambridge Scholarship" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_organization">Organization *</label>
+              <input type="text" class="form-input" id="s_organization" placeholder="e.g. Gates Foundation" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_country">Country of Study</label>
+              <input type="text" class="form-input" id="s_country" placeholder="e.g. United Kingdom" />
+            </div>
+            <div class="form-group admin-form-grid__full">
+              <label class="form-label" for="s_description">Description *</label>
+              <textarea class="form-textarea" id="s_description" placeholder="Brief description of the scholarship..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_amount">Funding Amount</label>
+              <input type="text" class="form-input" id="s_amount" placeholder="e.g. Fully Funded" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_deadline">Deadline</label>
+              <input type="date" class="form-input" id="s_deadline" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_link">Application Link</label>
+              <input type="url" class="form-input" id="s_link" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_level">Degree Level (comma-separated)</label>
+              <input type="text" class="form-input" id="s_level" placeholder="e.g. postgraduate, phd" />
+              <p class="form-hint">Options: undergraduate, postgraduate, phd</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_region">Region (comma-separated)</label>
+              <input type="text" class="form-input" id="s_region" placeholder="e.g. nigeria, africa, international" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="s_tags">Tags (comma-separated)</label>
+              <input type="text" class="form-input" id="s_tags" placeholder="e.g. fully-funded, leadership" />
+            </div>
+            <div class="form-group">
+              <label class="admin-checkbox-label">
+                <input type="checkbox" id="s_featured" />
+                Feature this scholarship on the homepage
+              </label>
+            </div>
+          </div>
+
+          <div class="admin-form-card__actions">
+            <button class="btn btn--ghost" id="cancelScholarshipBtn">Cancel</button>
+            <button class="btn btn--primary" id="saveScholarshipBtn">Save Scholarship</button>
+          </div>
+        </div>
+
+        <!-- Scholarships table -->
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="scholarshipsTable">
+            <thead>
+              <tr>
+                <th>Scholarship</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="scholarshipsTableBody">
+              <tr><td colspan="5" class="admin-table__loading">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- =====================
+           BLOG POSTS TAB
+      ===================== -->
+      <section class="admin-tab" id="tab-posts" style="display:none">
+
+        <div class="admin-tab__header">
+          <h2 class="admin-tab__title">Blog Posts</h2>
+          <button class="btn btn--primary" id="addPostBtn">+ Add Post</button>
+        </div>
+
+        <!-- Post form -->
+        <div class="admin-form-card" id="postForm" style="display:none">
+          <h3 class="admin-form-card__title" id="postFormTitle">Add New Post</h3>
+
+          <div class="admin-form-grid">
+            <div class="form-group">
+              <label class="form-label" for="p_id">ID (URL-safe) *</label>
+              <input type="text" class="form-input" id="p_id" placeholder="e.g. how-to-get-references" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="p_category">Category *</label>
+              <select class="form-select" id="p_category">
+                <option value="">Select category</option>
+                <option value="Application Tips">Application Tips</option>
+                <option value="Scholarship Lists">Scholarship Lists</option>
+                <option value="Guides">Guides</option>
+                <option value="Interviews">Interviews</option>
+              </select>
+            </div>
+            <div class="form-group admin-form-grid__full">
+              <label class="form-label" for="p_title">Title *</label>
+              <input type="text" class="form-input" id="p_title" placeholder="Post title" />
+            </div>
+            <div class="form-group admin-form-grid__full">
+              <label class="form-label" for="p_excerpt">Excerpt *</label>
+              <textarea class="form-textarea" id="p_excerpt" placeholder="Short summary shown on card previews..." style="min-height:80px"></textarea>
+            </div>
+            <div class="form-group admin-form-grid__full">
+              <label class="form-label" for="p_content">Content (HTML allowed)</label>
+              <textarea class="form-textarea" id="p_content" placeholder="Full article content. You can use HTML tags like &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;..." style="min-height:240px;font-family:monospace;font-size:var(--text-sm)"></textarea>
+              <p class="form-hint">Wrap sections in &lt;h2&gt; tags — they'll auto-generate the table of contents. Use &lt;div class='callout'&gt; for tip boxes.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="p_image">Image URL</label>
+              <input type="url" class="form-input" id="p_image" placeholder="https://images.unsplash.com/..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="p_read_time">Read Time</label>
+              <input type="text" class="form-input" id="p_read_time" placeholder="e.g. 5 min read" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="p_date">Date</label>
+              <input type="date" class="form-input" id="p_date" />
+            </div>
+            <div class="form-group">
+              <label class="admin-checkbox-label">
+                <input type="checkbox" id="p_featured" />
+                Feature this post on the homepage
+              </label>
+            </div>
+          </div>
+
+          <div class="admin-form-card__actions">
+            <button class="btn btn--ghost" id="cancelPostBtn">Cancel</button>
+            <button class="btn btn--primary" id="savePostBtn">Save Post</button>
+          </div>
+        </div>
+
+        <!-- Posts table -->
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="postsTable">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="postsTableBody">
+              <tr><td colspan="5" class="admin-table__loading">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.js"></script>
+  <script src="admin.js"></script>
+
+</body>
+</html>

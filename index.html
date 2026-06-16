@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ScholarHub — Discover scholarships, guides, and resources for Nigerian, African, and international students."
+    />
+
+    <title>ScholarHub | Find Your Scholarship</title>
+
+    <!-- Favicon placeholder -->
+    <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon" />
+
+    <!-- Stylesheets — order matters -->
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="variables.css" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="components.css" />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <!-- =====================
+       NAVBAR
+  ===================== -->
+    <header class="navbar" role="banner">
+      <div class="container navbar__inner">
+        <!-- Logo -->
+        <a href="index.html" class="navbar__logo" aria-label="ScholarHub home">
+          <div class="navbar__logo-mark" aria-hidden="true">S</div>
+          <span class="navbar__logo-text">Scholar<span>Hub</span></span>
+        </a>
+
+        <!-- Desktop navigation -->
+        <nav class="navbar__nav" aria-label="Main navigation">
+          <a href="index.html" class="navbar__link navbar__link--active"
+            >Home</a
+          >
+          <a href="scholarships.html" class="navbar__link">Scholarships</a>
+          <a href="blog.html" class="navbar__link">Guides</a>
+          <a href="deadlines.html" class="navbar__link">Deadlines</a>
+        </nav>
+
+        <!-- Navbar actions -->
+        <div class="navbar__actions">
+          <a href="scholarships.html" class="btn btn--primary btn--sm">
+            Browse Scholarships
+          </a>
+
+          <!-- Mobile menu toggle -->
+          <button
+            class="navbar__toggle"
+            id="navToggle"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
+            aria-label="Open navigation menu"
+          >
+            <span class="navbar__toggle-bar"></span>
+            <span class="navbar__toggle-bar"></span>
+            <span class="navbar__toggle-bar"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div
+        class="navbar__mobile-menu"
+        id="mobileMenu"
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        <a href="index.html" class="navbar__mobile-link">Home</a>
+        <a href="scholarships.html" class="navbar__mobile-link">Scholarships</a>
+        <a href="blog.html" class="navbar__mobile-link">Guides &amp; Tips</a>
+        <a href="deadlines.html" class="navbar__mobile-link"
+          >Deadline Tracker</a
+        >
+        <a
+          href="scholarships.html"
+          class="btn btn--primary"
+          style="margin-top: 0.5rem"
+          >Browse Scholarships</a
+        >
+      </div>
+    </header>
+
+    <!-- =====================
+       HERO SECTION
+  ===================== -->
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-heading">
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <div class="hero__eyebrow">
+              <span class="badge badge--accent">🌍 Free Resource Hub</span>
+            </div>
+
+            <h1 class="hero__title" id="hero-heading">
+              Your scholarship<br />
+              <em>starts here.</em>
+            </h1>
+
+            <p class="hero__subtitle">
+              Discover hundreds of scholarships for Nigerian, African, and
+              international students — with expert guides, deadline tracking,
+              and everything you need to apply with confidence.
+            </p>
+
+            <div class="hero__actions">
+              <a href="scholarships.html" class="btn btn--accent btn--lg">
+                Browse Scholarships
+              </a>
+              <a href="blog.html" class="btn btn--outline btn--lg">
+                Read the Guides
+              </a>
+            </div>
+
+            <!-- Trust signals -->
+            <div class="hero__stats">
+              <div class="hero__stat">
+                <span class="hero__stat-number" id="statScholarships"
+                  >500+</span
+                >
+                <span class="hero__stat-label">Scholarships listed</span>
+              </div>
+              <div class="hero__stat-divider" aria-hidden="true"></div>
+              <div class="hero__stat">
+                <span class="hero__stat-number">80+</span>
+                <span class="hero__stat-label">Countries covered</span>
+              </div>
+              <div class="hero__stat-divider" aria-hidden="true"></div>
+              <div class="hero__stat">
+                <span class="hero__stat-number">100%</span>
+                <span class="hero__stat-label">Free to use</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero visual -->
+          <div class="hero__visual" aria-hidden="true">
+            <div class="hero__card-stack">
+              <div class="hero__floating-card hero__floating-card--1">
+                <span class="hero__floating-card-icon">🎓</span>
+                <div>
+                  <div class="hero__floating-card-title">
+                    Chevening Scholarship
+                  </div>
+                  <div class="hero__floating-card-sub">
+                    United Kingdom · Fully Funded
+                  </div>
+                </div>
+              </div>
+              <div class="hero__floating-card hero__floating-card--2">
+                <span class="hero__floating-card-icon">🌐</span>
+                <div>
+                  <div class="hero__floating-card-title">
+                    Mastercard Foundation
+                  </div>
+                  <div class="hero__floating-card-sub">
+                    Africa · Full Scholarship
+                  </div>
+                </div>
+              </div>
+              <div class="hero__floating-card hero__floating-card--3">
+                <span class="hero__floating-card-icon">🏛️</span>
+                <div>
+                  <div class="hero__floating-card-title">Fulbright Program</div>
+                  <div class="hero__floating-card-sub">
+                    USA · Graduate Studies
+                  </div>
+                </div>
+              </div>
+              <div class="hero__orb hero__orb--1"></div>
+              <div class="hero__orb hero__orb--2"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================
+         CATEGORY FILTER STRIP
+    ===================== -->
+      <section class="categories section--sm" aria-label="Browse by category">
+        <div class="container">
+          <div class="categories__scroll">
+            <button
+              class="category-pill category-pill--active"
+              data-filter="all"
+            >
+              All
+            </button>
+            <button class="category-pill" data-filter="undergraduate">
+              Undergraduate
+            </button>
+            <button class="category-pill" data-filter="postgraduate">
+              Postgraduate
+            </button>
+            <button class="category-pill" data-filter="phd">PhD</button>
+            <button class="category-pill" data-filter="fully-funded">
+              Fully Funded
+            </button>
+            <button class="category-pill" data-filter="nigeria">Nigeria</button>
+            <button class="category-pill" data-filter="africa">Africa</button>
+            <button class="category-pill" data-filter="stem">STEM</button>
+            <button class="category-pill" data-filter="arts">
+              Arts &amp; Humanities
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================
+         FEATURED SCHOLARSHIPS
+    ===================== -->
+      <section class="section" aria-labelledby="scholarships-heading">
+        <div class="container">
+          <div
+            class="section-header flex items-center justify-between flex-wrap gap-4"
+          >
+            <div>
+              <span class="section-eyebrow">Featured</span>
+              <h2 class="section-title" id="scholarships-heading">
+                Top scholarships right now
+              </h2>
+            </div>
+            <a href="scholarships.html" class="btn btn--outline"
+              >View all scholarships</a
+            >
+          </div>
+
+          <!-- Cards are rendered here by scholarships.js -->
+          <div class="grid-cards" id="featuredScholarships" aria-live="polite">
+            <!-- JS will inject scholarship cards here -->
+            <!-- Loading skeleton shown while data loads -->
+            <div class="card skeleton-card" aria-hidden="true">
+              <div class="card__header">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: var(--radius-md);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 60px;
+                    height: 24px;
+                    border-radius: var(--radius-full);
+                  "
+                ></div>
+              </div>
+              <div class="card__body">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 80%;
+                    height: 20px;
+                    margin-bottom: 8px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 50%;
+                    height: 14px;
+                    margin-bottom: 16px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 100%;
+                    height: 14px;
+                    margin-bottom: 6px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 75%;
+                    height: 14px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="card skeleton-card" aria-hidden="true">
+              <div class="card__header">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: var(--radius-md);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 60px;
+                    height: 24px;
+                    border-radius: var(--radius-full);
+                  "
+                ></div>
+              </div>
+              <div class="card__body">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 70%;
+                    height: 20px;
+                    margin-bottom: 8px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 55%;
+                    height: 14px;
+                    margin-bottom: 16px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 100%;
+                    height: 14px;
+                    margin-bottom: 6px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 60%;
+                    height: 14px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+              </div>
+            </div>
+            <div class="card skeleton-card" aria-hidden="true">
+              <div class="card__header">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: var(--radius-md);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 60px;
+                    height: 24px;
+                    border-radius: var(--radius-full);
+                  "
+                ></div>
+              </div>
+              <div class="card__body">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 85%;
+                    height: 20px;
+                    margin-bottom: 8px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 45%;
+                    height: 14px;
+                    margin-bottom: 16px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 100%;
+                    height: 14px;
+                    margin-bottom: 6px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 80%;
+                    height: 14px;
+                    border-radius: var(--radius-sm);
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================
+         HOW IT WORKS
+    ===================== -->
+      <section class="how-it-works section" aria-labelledby="how-heading">
+        <div class="container">
+          <div class="section-header section-header--centered">
+            <span class="section-eyebrow">Simple process</span>
+            <h2 class="section-title" id="how-heading">
+              Find your scholarship in 3 steps
+            </h2>
+            <p class="section-subtitle">
+              No subscriptions, no paywalls. Just the information you need to
+              secure funding for your education.
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step__number" aria-hidden="true">1</div>
+              <h3 class="step__title">Search &amp; Filter</h3>
+              <p class="step__text">
+                Browse our database by country, field of study, degree level, or
+                funding type to find scholarships that match your profile.
+              </p>
+            </div>
+            <div class="step__connector" aria-hidden="true"></div>
+            <div class="step">
+              <div class="step__number" aria-hidden="true">2</div>
+              <h3 class="step__title">Read the Guide</h3>
+              <p class="step__text">
+                Every scholarship comes with tips on eligibility, required
+                documents, and how to write a winning application.
+              </p>
+            </div>
+            <div class="step__connector" aria-hidden="true"></div>
+            <div class="step">
+              <div class="step__number" aria-hidden="true">3</div>
+              <h3 class="step__title">Track Your Deadline</h3>
+              <p class="step__text">
+                Save scholarships to your deadline tracker so you never miss an
+                opening. Get notified before applications close.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================
+         LATEST GUIDES
+    ===================== -->
+      <section class="section" aria-labelledby="guides-heading">
+        <div class="container">
+          <div
+            class="section-header flex items-center justify-between flex-wrap gap-4"
+          >
+            <div>
+              <span class="section-eyebrow">From the blog</span>
+              <h2 class="section-title" id="guides-heading">
+                Guides &amp; tips
+              </h2>
+            </div>
+            <a href="blog.html" class="btn btn--outline">Read all guides</a>
+          </div>
+
+          <!-- Blog cards rendered by blog.js -->
+          <div class="grid-cards" id="latestPosts" aria-live="polite">
+            <!-- JS injects blog cards here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================
+         NEWSLETTER
+    ===================== -->
+      <section class="section--sm" aria-labelledby="newsletter-heading">
+        <div class="container container--narrow">
+          <div class="newsletter">
+            <h2 class="newsletter__title" id="newsletter-heading">
+              Never miss a deadline
+            </h2>
+            <p class="newsletter__subtitle">
+              Get new scholarships and application tips delivered to your inbox
+              every week. Join 12,000+ students.
+            </p>
+
+            <form class="newsletter__form" id="newsletterForm" novalidate>
+              <input
+                type="email"
+                class="newsletter__input"
+                id="newsletterEmail"
+                name="email"
+                placeholder="Enter your email address"
+                autocomplete="email"
+                required
+                aria-label="Email address"
+                aria-describedby="newsletter-hint"
+              />
+              <button type="submit" class="btn btn--accent">Subscribe</button>
+            </form>
+
+            <p class="newsletter__privacy" id="newsletter-hint">
+              No spam. Unsubscribe any time.
+            </p>
+
+            <!-- Success / error message injected by JS -->
+            <div id="newsletterMessage" role="alert" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================
+       FOOTER
+  ===================== -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer__grid">
+          <!-- Brand column -->
+          <div class="footer__brand">
+            <div class="footer__logo-text">Scholar<span>Hub</span></div>
+            <p>
+              A free resource helping Nigerian, African, and international
+              students find and win scholarships that fund their education and
+              future.
+            </p>
+          </div>
+
+          <!-- Links column -->
+          <div>
+            <h3 class="footer__heading">Explore</h3>
+            <ul class="footer__links">
+              <li>
+                <a href="scholarships.html" class="footer__link"
+                  >All Scholarships</a
+                >
+              </li>
+              <li>
+                <a href="blog.html" class="footer__link">Guides &amp; Tips</a>
+              </li>
+              <li>
+                <a href="deadlines.html" class="footer__link"
+                  >Deadline Tracker</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Resources column -->
+          <div>
+            <h3 class="footer__heading">Resources</h3>
+            <ul class="footer__links">
+              <li><a href="blog.html" class="footer__link">How to Apply</a></li>
+              <li>
+                <a href="blog.html" class="footer__link"
+                  >Write a Strong Essay</a
+                >
+              </li>
+              <li>
+                <a href="blog.html" class="footer__link"
+                  >Interview Preparation</a
+                >
+              </li>
+              <li>
+                <a href="blog.html" class="footer__link">Document Checklist</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__bottom">
+          <p>
+            &copy; <span id="footerYear"></span> ScholarHub. All rights
+            reserved.
+          </p>
+          <p>Built for students, by students.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- =====================
+       SCRIPTS
+       Deferred so they don't block rendering
+  ===================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="scholarships.js" defer></script>
+    <script src="blog.js" defer></script>
+  </body>
+</html>

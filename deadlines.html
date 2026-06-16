@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Track scholarship deadlines with live countdown timers. Never miss an application deadline again." />
+  <title>Deadline Tracker | ScholarHub</title>
+  <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="variables.css" />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="deadlines.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="ScholarHub home">
+        <div class="navbar__logo-mark" aria-hidden="true">S</div>
+        <span class="navbar__logo-text">Scholar<span>Hub</span></span>
+      </a>
+      <nav class="navbar__nav" aria-label="Main navigation">
+        <a href="index.html"        class="navbar__link">Home</a>
+        <a href="scholarships.html" class="navbar__link">Scholarships</a>
+        <a href="blog.html"         class="navbar__link">Guides</a>
+        <a href="deadlines.html"    class="navbar__link navbar__link--active">Deadlines</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="scholarships.html" class="btn btn--primary btn--sm">Browse Scholarships</a>
+        <button class="navbar__toggle" id="navToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open navigation menu">
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+      <a href="index.html"        class="navbar__mobile-link">Home</a>
+      <a href="scholarships.html" class="navbar__mobile-link">Scholarships</a>
+      <a href="blog.html"         class="navbar__mobile-link">Guides &amp; Tips</a>
+      <a href="deadlines.html"    class="navbar__mobile-link">Deadline Tracker</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="deadline-hero">
+      <div class="container">
+        <span class="section-eyebrow" style="color:var(--color-accent-300)">Stay on track</span>
+        <h1 class="deadline-hero__title">Deadline Tracker</h1>
+        <p class="deadline-hero__subtitle">
+          Live countdowns for every scholarship in our database.
+          Sort by urgency and never miss an opening again.
+        </p>
+
+        <!-- Summary stats bar -->
+        <div class="deadline-stats" id="deadlineStats" aria-live="polite">
+          <div class="deadline-stat">
+            <span class="deadline-stat__number" id="statOpen">—</span>
+            <span class="deadline-stat__label">Open now</span>
+          </div>
+          <div class="deadline-stat__divider" aria-hidden="true"></div>
+          <div class="deadline-stat">
+            <span class="deadline-stat__number" id="statSoon">—</span>
+            <span class="deadline-stat__label">Closing in 30 days</span>
+          </div>
+          <div class="deadline-stat__divider" aria-hidden="true"></div>
+          <div class="deadline-stat">
+            <span class="deadline-stat__number" id="statClosed">—</span>
+            <span class="deadline-stat__label">Closed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTROLS BAR -->
+    <section class="deadline-controls">
+      <div class="container">
+        <div class="deadline-controls__inner">
+
+          <!-- Status filter pills -->
+          <div class="deadline-filter-pills" role="group" aria-label="Filter by status">
+            <button class="dl-pill dl-pill--active" data-status="all">All</button>
+            <button class="dl-pill" data-status="open">Open</button>
+            <button class="dl-pill" data-status="soon">Closing Soon</button>
+            <button class="dl-pill" data-status="closed">Closed</button>
+          </div>
+
+          <!-- Sort -->
+          <div class="deadline-sort">
+            <label for="dlSort" class="sr-only">Sort deadlines</label>
+            <select class="form-select" id="dlSort" style="width:auto;font-size:var(--text-sm)">
+              <option value="deadline-asc">Soonest first</option>
+              <option value="deadline-desc">Latest first</option>
+              <option value="az">A → Z</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DEADLINE LIST -->
+    <section class="section--sm">
+      <div class="container">
+        <p class="results-count" id="dlCount" aria-live="polite" style="margin-bottom:var(--space-6)"></p>
+        <div class="deadline-list" id="deadlineList" aria-live="polite">
+          <!-- Injected by deadlines.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="newsletter">
+          <h2 class="newsletter__title">Get deadline alerts by email</h2>
+          <p class="newsletter__subtitle">We'll notify you when new scholarships open and when deadlines are approaching.</p>
+          <form class="newsletter__form" id="newsletterForm" novalidate>
+            <input type="email" class="newsletter__input" id="newsletterEmail" name="email"
+              placeholder="Enter your email address" autocomplete="email" required aria-label="Email address" />
+            <button type="submit" class="btn btn--accent">Subscribe</button>
+          </form>
+          <p class="newsletter__privacy">No spam. Unsubscribe any time.</p>
+          <div id="newsletterMessage" role="alert" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo-text">Scholar<span>Hub</span></div>
+          <p>A free resource helping Nigerian, African, and international students find and win scholarships.</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Explore</h3>
+          <ul class="footer__links">
+            <li><a href="scholarships.html" class="footer__link">All Scholarships</a></li>
+            <li><a href="blog.html"         class="footer__link">Guides &amp; Tips</a></li>
+            <li><a href="deadlines.html"    class="footer__link">Deadline Tracker</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Resources</h3>
+          <ul class="footer__links">
+            <li><a href="blog.html" class="footer__link">How to Apply</a></li>
+            <li><a href="blog.html" class="footer__link">Write a Strong Essay</a></li>
+            <li><a href="blog.html" class="footer__link">Document Checklist</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="footerYear"></span> ScholarHub. All rights reserved.</p>
+        <p>Built for students, by students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.js" defer></script>
+  <script src="main.js"      defer></script>
+  <script src="deadlines.js" defer></script>
+
+</body>
+</html>

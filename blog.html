@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Scholarship guides, application tips, and resources to help Nigerian, African, and international students win funding." />
+  <title>Guides &amp; Tips | ScholarHub</title>
+  <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="variables.css" />
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="ScholarHub home">
+        <div class="navbar__logo-mark" aria-hidden="true">S</div>
+        <span class="navbar__logo-text">Scholar<span>Hub</span></span>
+      </a>
+      <nav class="navbar__nav" aria-label="Main navigation">
+        <a href="index.html"        class="navbar__link">Home</a>
+        <a href="scholarships.html" class="navbar__link">Scholarships</a>
+        <a href="blog.html"         class="navbar__link navbar__link--active">Guides</a>
+        <a href="deadlines.html"    class="navbar__link">Deadlines</a>
+      </nav>
+      <div class="navbar__actions">
+        <a href="scholarships.html" class="btn btn--primary btn--sm">Browse Scholarships</a>
+        <button class="navbar__toggle" id="navToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open navigation menu">
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+    <div class="navbar__mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+      <a href="index.html"        class="navbar__mobile-link">Home</a>
+      <a href="scholarships.html" class="navbar__mobile-link">Scholarships</a>
+      <a href="blog.html"         class="navbar__mobile-link">Guides &amp; Tips</a>
+      <a href="deadlines.html"    class="navbar__mobile-link">Deadline Tracker</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero blog-hero">
+      <div class="container">
+        <span class="section-eyebrow" style="color:var(--color-accent-300)">Knowledge Base</span>
+        <h1 class="page-hero__title" style="color:#fff;margin-bottom:var(--space-3)">Guides &amp; Tips</h1>
+        <p style="color:var(--color-primary-200);font-size:var(--text-md);max-width:52ch;margin-bottom:var(--space-8)">
+          Everything you need to find, apply for, and win scholarships — written by people who have done it.
+        </p>
+        <!-- Blog search -->
+        <div class="search-bar" style="max-width:480px" role="search">
+          <svg class="search-bar__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="search"
+            class="search-bar__input"
+            id="blogSearch"
+            placeholder="Search guides..."
+            autocomplete="off"
+            aria-label="Search guides"
+            style="background:rgba(255,255,255,0.97);border-color:transparent;padding-block:var(--space-4);box-shadow:var(--shadow-lg);"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORY TABS -->
+    <section class="blog-categories" aria-label="Filter by category">
+      <div class="container">
+        <div class="blog-category-tabs" id="categoryTabs" role="tablist">
+          <button class="blog-tab blog-tab--active" data-category="all" role="tab" aria-selected="true">All</button>
+          <button class="blog-tab" data-category="Application Tips"  role="tab" aria-selected="false">Application Tips</button>
+          <button class="blog-tab" data-category="Scholarship Lists" role="tab" aria-selected="false">Scholarship Lists</button>
+          <button class="blog-tab" data-category="Guides"            role="tab" aria-selected="false">Guides</button>
+          <button class="blog-tab" data-category="Interviews"        role="tab" aria-selected="false">Interviews</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED POST (hero card) -->
+    <section class="section--sm">
+      <div class="container">
+        <div id="featuredPost">
+          <!-- Injected by blog-page.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ALL POSTS GRID -->
+    <section class="section--sm" style="padding-top:0">
+      <div class="container">
+        <div class="results-bar" style="margin-bottom:var(--space-6)">
+          <p class="results-count" id="blogResultsCount" aria-live="polite"></p>
+        </div>
+        <div class="grid-cards" id="blogGrid" aria-live="polite">
+          <!-- Injected by blog-page.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="newsletter">
+          <h2 class="newsletter__title">Get guides in your inbox</h2>
+          <p class="newsletter__subtitle">New scholarship tips every week. Join 12,000+ students already subscribed.</p>
+          <form class="newsletter__form" id="newsletterForm" novalidate>
+            <input type="email" class="newsletter__input" id="newsletterEmail" name="email" placeholder="Enter your email address" autocomplete="email" required aria-label="Email address" />
+            <button type="submit" class="btn btn--accent">Subscribe</button>
+          </form>
+          <p class="newsletter__privacy">No spam. Unsubscribe any time.</p>
+          <div id="newsletterMessage" role="alert" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo-text">Scholar<span>Hub</span></div>
+          <p>A free resource helping Nigerian, African, and international students find and win scholarships.</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Explore</h3>
+          <ul class="footer__links">
+            <li><a href="scholarships.html" class="footer__link">All Scholarships</a></li>
+            <li><a href="blog.html"         class="footer__link">Guides &amp; Tips</a></li>
+            <li><a href="deadlines.html"    class="footer__link">Deadline Tracker</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Resources</h3>
+          <ul class="footer__links">
+            <li><a href="blog.html" class="footer__link">How to Apply</a></li>
+            <li><a href="blog.html" class="footer__link">Write a Strong Essay</a></li>
+            <li><a href="blog.html" class="footer__link">Document Checklist</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="footerYear"></span> ScholarHub. All rights reserved.</p>
+        <p>Built for students, by students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="supabase.js" defer></script>
+  <script src="main.js"       defer></script>
+  <script src="blog-page.js"  defer></script>
+
+</body>
+</html>
