@@ -24,36 +24,49 @@ if (!GROQ_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
 async function researchScholarships() {
   console.log('Asking Groq AI to research new scholarships...');
 
-  const prompt = `You are a scholarship research assistant. Find 5 real, currently open scholarships relevant for Nigerian, African, or international students.
+  const today = new Date();
+  const year  = today.getFullYear();
+  const month = today.toLocaleString('en-US', { month: 'long' });
 
-Return ONLY a valid JSON array. No explanation, no markdown, no code blocks. Just the raw JSON array:
+  const prompt = `You are a real-time scholarship discovery agent. Today is ${month} ${year}.
+
+Your job is to find 5 scholarships that are:
+- CURRENTLY OPEN with deadlines in ${year} or early ${year + 1}
+- Recently announced or newly opened — not scholarships that closed months ago
+- Relevant for Nigerian, African, or international students
+- From reputable organizations (governments, universities, foundations, NGOs)
+
+Do NOT return scholarships with deadlines that have already passed.
+Do NOT return well-known ones like Chevening, Fulbright, DAAD, Commonwealth — find FRESH ones.
+Focus on scholarships announced or opened in the last few weeks or months of ${year}.
+
+Return ONLY a valid JSON array. No explanation, no markdown, no code blocks:
 
 [
   {
-    "id": "unique-lowercase-id-with-hyphens",
+    "id": "unique-lowercase-id-with-hyphens-${year}",
     "title": "Full scholarship name",
     "organization": "Awarding organization",
     "emoji": "🎓",
-    "description": "2-3 sentences about the scholarship, who it is for, and what it covers",
+    "description": "2-3 sentences about who it is for, what it covers, and why it matters",
     "amount": "Fully Funded",
     "level": ["postgraduate"],
     "region": ["nigeria", "africa"],
-    "country_of_study": "United Kingdom",
-    "deadline": "2025-11-30",
-    "link": "https://official-website.com/apply",
-    "tags": ["fully-funded", "leadership"],
+    "country_of_study": "Country where studies take place",
+    "deadline": "${year}-11-30",
+    "link": "https://official-application-url.com",
+    "tags": ["fully-funded", "postgraduate"],
     "featured": false
   }
 ]
 
 Rules:
-- IDs must be lowercase with hyphens only, no spaces
-- level options: undergraduate, postgraduate, phd
-- region options: nigeria, africa, international
-- deadline format: YYYY-MM-DD or null if unknown
-- Find fresh scholarships not commonly listed
+- All deadlines must be in ${year} or ${year + 1} — no past deadlines
+- IDs: lowercase, hyphens only, include the year e.g. "gates-cambridge-${year}"
+- level: undergraduate, postgraduate, or phd
+- region: nigeria, africa, international
 - Return exactly 5 scholarships
-- Return ONLY the JSON array, nothing else`;
+- Return ONLY the JSON array, absolutely nothing else`;
 
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
