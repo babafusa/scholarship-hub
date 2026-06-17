@@ -16,7 +16,7 @@ const categoryTabs      = document.querySelectorAll('.blog-tab');
 
 async function fetchPosts() {
   try {
-    const data = await window.DB.select('blog_posts', 'order=date.desc&limit=100');
+    const data = await window.DB.select('blog_posts', 'status=eq.published&order=date.desc&limit=100');
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.error('[ScholarHub]', err);

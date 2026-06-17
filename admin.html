@@ -154,8 +154,21 @@
         <!-- Scholarships table -->
         <div class="admin-table-wrap">
           <table class="admin-table" id="scholarshipsTable">
+            <!-- Bulk action bar — hidden until checkboxes selected -->
+            <div id="bulkActionBar" style="display:none;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-primary-50);border:var(--border-width) solid var(--color-primary-200);border-radius:var(--radius-md);margin-bottom:var(--space-4)">
+              <span id="bulkSelectedCount" style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--color-primary-700)">0 selected</span>
+              <button id="bulkDeleteBtn" class="btn btn--sm" style="background:var(--color-danger);color:#fff;border-color:var(--color-danger)" onclick="bulkDelete()">🗑 Delete Selected</button>
+              <button class="btn btn--ghost btn--sm" onclick="toggleSelectAll(false)">Clear selection</button>
+            </div>
             <thead>
               <tr>
+                <th style="width:40px">
+                  <input type="checkbox" id="selectAllCheckbox" class="filter-checkbox"
+                    onchange="toggleSelectAll(this.checked)"
+                    aria-label="Select all scholarships"
+                    title="Select all"
+                  />
+                </th>
                 <th>Scholarship</th>
                 <th>Deadline</th>
                 <th>Status</th>
@@ -272,6 +285,29 @@
           <div class="admin-form-card__actions">
             <button class="btn btn--ghost" id="cancelPostBtn">Cancel</button>
             <button class="btn btn--primary" id="savePostBtn">Save Post</button>
+          </div>
+        </div>
+
+        <!-- Blog Drafts section -->
+        <div id="blogDraftsSection" style="margin-bottom:var(--space-8)">
+          <h3 style="font-size:var(--text-lg);margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2)">
+            🤖 AI Blog Drafts
+            <span id="blogDraftsBadge" class="filter-sidebar__active-count" style="display:none">0</span>
+          </h3>
+          <div class="admin-table-wrap" style="margin-bottom:var(--space-6)">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Read Time</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="blogDraftsTableBody">
+                <tr><td colspan="4" class="admin-table__loading">Loading...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 

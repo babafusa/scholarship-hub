@@ -8,7 +8,7 @@ async function initBlog() {
   if (!container) return;
 
   try {
-    const posts = await window.DB.select('blog_posts', 'featured=eq.true&order=date.desc&limit=3');
+    const posts = await window.DB.select('blog_posts', 'status=eq.published&featured=eq.true&order=date.desc&limit=3');
     if (!posts || posts.length === 0) {
       container.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p class="empty-state__text">Guides coming soon.</p></div>';
       return;
